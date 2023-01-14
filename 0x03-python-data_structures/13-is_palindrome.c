@@ -1,37 +1,72 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "lists.h"
 
-typedef struct listint_s
+/**
+ * reverse_listint - reverses a linked list
+ * @head: pointer to the first node in the list
+ *
+ * Return: pointer to the first node in the new list
+ */
+void reverse_listint(listint_t **head)
 {
-    int n;
-    struct listint_s *next;
-} listint_t;
+	listint_t *prev = NULL;
+	listint_t *current = *head;
+	listint_t *next = NULL;
 
+	while (current)
+	{
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
+	}
+
+	*head = prev;
+}
+
+/**
+ * is_palindrome - checks if a linked list is a palindrome
+ * @head: double pointer to the linked list
+ *
+ * Return: 1 if it is, 0 if not
+ */
 int is_palindrome(listint_t **head)
 {
-    listint_t *temp = *head;
-    int length = 0;
-    int i;
-    int arr[1000];
+	listint_t *slow = *head, *fast = *head, *temp = *head, *dup = NULL;
 
-    /* Edge case: empty list */
-    if (*head == NULL)
-        return 1;
+	if (*head == NULL || (*head)->next == NULL)
+		return (1);
 
-    /* Get the length of the list and store the values in an array */
-    while (temp != NULL)
-    {
-        arr[length] = temp->n;
-        temp = temp->next;
-        length++;
-    }
+	while (1)
+	{
+		fast = fast->next->next;
+		if (!fast)
+		{
+			dup = slow->next;
+			break;
+		}
+		if (!fast->next)
+		{
+			dup = slow->next->next;
+			break;
+		}
+		slow = slow->next;
+	}
 
-    /* Compare the values in the array to check if it is a palindrome */
-    for (i = 0; i < length / 2; i++)
-    {
-        if (arr[i] != arr[length - 1 - i])
-            return 0;
-    }
+	reverse_listint(&dup);
 
-    return 1;
+	while (dup && temp)
+	{
+		if (temp->n == dup->n)
+		{
+			dup = dup->next;
+			temp = temp->next;
+		}
+		else
+			return (0);
+	}
+
+	if (!dup)
+		return (1);
+
+	return (0);
 }
