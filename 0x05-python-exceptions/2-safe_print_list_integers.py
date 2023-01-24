@@ -10,13 +10,13 @@ def safe_print_list_integers(my_list=[], x=0):
     Returns:
         The number of elements printed.
     """
-    ret = 0
-    for i in range(0, x):
+      integers_printed = 0
+    for i in range(x):
         try:
-            print("{:d}".format(my_list[i]), end="")
-            ret += 1
-        except (ValueError, TypeError):
-            continue
-    print("")
-    return (ret)
-
+            if isinstance(my_list[i], int):
+                print("{:d}".format(my_list[i]), end=' ')
+                integers_printed += 1
+        except:
+            raise Exception("x is larger than the length of my_list")
+    print()
+    return integers_printed
