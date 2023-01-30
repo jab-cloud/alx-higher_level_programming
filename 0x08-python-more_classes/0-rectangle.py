@@ -4,7 +4,8 @@ Module creates the Rectangle class
 
 """
 
-class Rectangle:
+
+class Rectangle():
 
         """Empty class Rectangle"""
 
